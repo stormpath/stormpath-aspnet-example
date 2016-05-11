@@ -1,0 +1,16 @@
+﻿@model StormpathExample.Models.ProfileViewModel
+
+@{
+    ViewBag.Title = "Manage Profile";
+}
+<h2>Manage Profile</h2>
+
+<p>This route is <b>protected</b> and cannot be accessed unless you are logged in.</p>
+
+<h3>Account Details</h3>
+<p><b>Username:</b> @Model.Account.Username</p>
+<p><b>Email:</b> @Model.Account.Email</p>
+<p><b>Full Name:</b> @Model.Account.FullName</p>
+<p><b>First:</b> @Model.Account.GivenName</p>
+<p><b>Last:</b> @Model.Account.Surname</p>
+<p><b>ID:</b> @Model.Account.Href</p>

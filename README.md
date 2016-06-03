@@ -2,6 +2,8 @@
 
 Example web application using ASP.NET MVC 5 and Stormpath. Clone it and kick the tires!
 
+If you want step-by-step instructions, check out the [Stormpath ASP.NET quickstart](http://docs.stormpath.com/dotnet/aspnet/latest/quickstart.html).
+
 ## Getting Started
 
 1. **[Sign up](https://api.stormpath.com/register) for Stormpath**

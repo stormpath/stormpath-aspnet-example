@@ -25,7 +25,16 @@ namespace StormpathExample
     {
         public void Configuration(IAppBuilder app)
         {
+            // By default, the Stormpath SDK will look for the
+            // API Key ID, API Key Secret, and Application href in environment variables.
+
+            // It will also search the application root for a file called stormpath.yaml or stormpath.json.
+            // This example project contains a stormpath.yaml file.
             app.UseStormpath();
+
+            // You can optionally pass a configuration object instead.
+            // Instantiate and pass an object of type Stormpath.Configuration.Abstractions.StormpathConfiguration
+            // to configure the SDK via code.
         }
     }
 }

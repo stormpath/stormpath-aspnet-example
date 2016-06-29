@@ -17,23 +17,15 @@
 using Microsoft.Owin;
 using Owin;
 using Stormpath.AspNet;
-using Stormpath.Configuration.Abstractions;
 
 [assembly: OwinStartup(typeof(StormpathExample.Startup))]
-
 namespace StormpathExample
 {
     public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseStormpath(new StormpathConfiguration()
-            {
-                Application = new ApplicationConfiguration()
-                {
-                    Name = "My Application"
-                }
-            });
+            app.UseStormpath();
         }
     }
 }

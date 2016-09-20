@@ -17,6 +17,7 @@
 using Microsoft.Owin;
 using Owin;
 using Stormpath.AspNet;
+using Stormpath.Configuration.Abstractions;
 
 [assembly: OwinStartup(typeof(StormpathExample.Startup))]
 namespace StormpathExample
@@ -33,8 +34,22 @@ namespace StormpathExample
             app.UseStormpath();
 
             // You can optionally pass a configuration object instead.
-            // Instantiate and pass an object of type Stormpath.Configuration.Abstractions.StormpathConfiguration
-            // to configure the SDK via code.
+            // Instantiate and pass an object to configure the SDK via code:
+            //app.UseStormpath(new StormpathConfiguration
+            //{
+            //    Application = new ApplicationConfiguration
+            //    {
+            //        Href = "YOUR_APPLICATION_HREF"
+            //    },
+            //    Client = new ClientConfiguration
+            //    {
+            //        ApiKey = new ClientApiKeyConfiguration
+            //        {
+            //            Id = "YOUR_API_KEY_ID",
+            //            Secret = "YOUR_API_KEY_SECRET"
+            //        }
+            //    }
+            //});
         }
     }
 }

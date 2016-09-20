@@ -21,6 +21,9 @@ using StormpathExample.Models;
 namespace StormpathExample.Controllers
 {
     [Authorize]
+    // Stormpath supports some additional authorization attributes:
+    //[StormpathGroupsRequired("admin")]
+    //[StormpathCustomDataRequired("canViewProfile", true)]
     public class ProfileController : Controller
     {
         // GET: Profile

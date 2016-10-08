@@ -17,7 +17,6 @@
 using Microsoft.Owin;
 using Owin;
 using Stormpath.AspNet;
-using Stormpath.Configuration.Abstractions;
 
 [assembly: OwinStartup(typeof(StormpathExample.Startup))]
 namespace StormpathExample

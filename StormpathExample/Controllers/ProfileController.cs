@@ -29,8 +29,7 @@ namespace StormpathExample.Controllers
         // GET: Profile
         public ActionResult Index()
         {
-            // Stormpath Client and Account can be pulled from the request
-            var client = Request.GetStormpathClient();
+            // User account can be pulled from the request
             var account = Request.GetStormpathAccount();
 
             return View(new ProfileViewModel { Account = account });

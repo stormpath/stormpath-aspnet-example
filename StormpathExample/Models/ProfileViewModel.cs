@@ -14,12 +14,12 @@
 // limitations under the License.
 // </copyright>
 
-using Stormpath.SDK.Account;
+using Stormpath.Owin.Abstractions;
 
 namespace StormpathExample.Models
 {
     public class ProfileViewModel
     {
-        public IAccount Account { get; set; }
+        public ICompatibleOktaAccount Account { get; set; }
     }
 }

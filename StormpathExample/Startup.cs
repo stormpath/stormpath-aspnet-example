@@ -17,11 +17,11 @@
 using System;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Owin;
 using Owin;
 using Stormpath.AspNet;
-using Stormpath.SDK.Logging;
-using LogLevel = Stormpath.SDK.Logging.LogLevel;
+using Stormpath.Configuration.Abstractions;
 
 [assembly: OwinStartup(typeof(StormpathExample.Startup))]
 namespace StormpathExample
@@ -30,35 +30,30 @@ namespace StormpathExample
     {
         public void Configuration(IAppBuilder app)
         {
-            // By default, the Stormpath SDK will look for the
-            // API Key ID, API Key Secret, and Application href in environment variables.
-
-            // It will also search the application root for a file called stormpath.yaml or stormpath.json.
-            // This example project contains a stormpath.yaml file.
             var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StormpathMiddleware.log");
 
-            app.UseStormpath(new StormpathMiddlewareOptions()
-            {
-                Logger = new FileLogger(logPath, LogLevel.Trace)
-            });
+            // By default, these environment variables will be seached for configuration:
+            // OKTA_ORG
+            // OKTA_APITOKEN
+            // OKTA_APPLICATION_ID
 
             // You can optionally pass a configuration object instead.
             // Instantiate and pass an object to configure the SDK via code:
-            //app.UseStormpath(new StormpathConfiguration
-            //{
-            //    Application = new ApplicationConfiguration
-            //    {
-            //        Href = "YOUR_APPLICATION_HREF"
-            //    },
-            //    Client = new ClientConfiguration
-            //    {
-            //        ApiKey = new ClientApiKeyConfiguration
-            //        {
-            //            Id = "YOUR_API_KEY_ID",
-            //            Secret = "YOUR_API_KEY_SECRET"
-            //        }
-            //    }
-            //});
+            var stormpathConfiguration = new StormpathConfiguration()
+            {
+                Org = "https://dev-341607.oktapreview.com/",
+                ApiToken = "00tTyb2FimobuYAT1Ni9SUw9Oc6_ubodx9cPwWMluZ",
+                Application = new OktaApplicationConfiguration()
+                {
+                    Id = "0oa9o91v53uRDC5dU0h7"
+                }
+            };
+
+            app.UseStormpath(new StormpathMiddlewareOptions()
+            {
+                Logger = new FileLogger(logPath, LogLevel.Trace),
+                Configuration = stormpathConfiguration
+            });
         }
     }
 
@@ -66,6 +61,7 @@ namespace StormpathExample
     {
         private readonly string _path;
         private readonly LogLevel _severity;
+        private readonly object _lock = new object();
 
         public FileLogger(string path, LogLevel severity)
         {
@@ -73,31 +69,25 @@ namespace StormpathExample
             _severity = severity;
         }
 
-        public void Log(LogEntry entry)
+        public IDisposable BeginScope<TState>(TState state)
         {
-            if (entry.Severity < _severity)
-            {
-                return;
-            }
+            throw new NotImplementedException();
+        }
 
+        public bool IsEnabled(LogLevel logLevel) => logLevel <= _severity;
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        {
             var logBuilder = new StringBuilder()
-                .Append($"[{entry.Severity}] {entry.Source}: ");
+                .Append($"[{logLevel}] {eventId}: ");
 
-            if (entry.Exception != null)
+            var message = formatter(state, exception);
+            logBuilder.AppendLine(message);
+
+            lock (_lock)
             {
-                logBuilder.Append($"Exception {entry.Exception.GetType().Name} \"{entry.Exception.Message}\" in {entry.Exception.Source} ");
+                File.AppendAllText(_path, logBuilder.ToString());
             }
-
-            bool isMessageUseful = !string.IsNullOrEmpty(entry.Message)
-                                   && !entry.Message.Equals(entry.Exception?.Message, StringComparison.Ordinal);
-            if (isMessageUseful)
-            {
-                logBuilder.Append($"\"{entry.Message}\"");
-            }
-
-            logBuilder.Append("\n");
-
-            File.AppendAllText(_path, logBuilder.ToString());
         }
     }
 }

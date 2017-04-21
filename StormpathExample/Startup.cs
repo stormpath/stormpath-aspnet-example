@@ -41,11 +41,11 @@ namespace StormpathExample
             // Instantiate and pass an object to configure the SDK via code:
             var stormpathConfiguration = new StormpathConfiguration()
             {
-                Org = "https://dev-341607.oktapreview.com/",
-                ApiToken = "00tTyb2FimobuYAT1Ni9SUw9Oc6_ubodx9cPwWMluZ",
+                Org = "https://dev-123456.oktapreview.com/",
+                ApiToken = "your_api_token",
                 Application = new OktaApplicationConfiguration()
                 {
-                    Id = "0oa9o91v53uRDC5dU0h7"
+                    Id = "abcd1234"
                 }
             };
 
